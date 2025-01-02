@@ -1,8 +1,23 @@
 import logo from '../../public/images/logo-color.svg';
 import { useState } from 'react';
+import { useSearch } from '../context/SearchContext';
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { searchTerm, setSearchTerm, currentPage } = useSearch();
+
+  const getPlaceholder = () => {
+    switch(currentPage) {
+      case 'installation':
+        return 'Search Installation by Sale Order, Ticket No, Number Plate';
+      case 'invoice':
+        return 'Search Invoice by No, Description';
+      case 'salesorder':
+        return 'Search Sales Order by No, Status, Customer Code';
+      default:
+        return 'Search...';
+    }
+  };
 
   return (
     <nav className="flex items-center justify-between px-4 py-2 bg-white border-b">
@@ -32,7 +47,9 @@ const Navbar = () => {
         <div className="relative">
           <input
             type="text"
-            placeholder="Search Installation"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder={getPlaceholder()}
             className="w-full px-4 py-2 bg-gray-100 rounded-lg focus:outline-none"
           />
           <svg
